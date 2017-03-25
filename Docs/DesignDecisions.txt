@@ -1,0 +1,75 @@
+############################
+DECISION
+--------
+RATIONALE
+############################
+
+Abstract classes for: WarehouseItem, Worker
+--------
+* All items and workers will share some basic functionalities
+* Lists these key fields to ensure flexibility if the warehouse needs new workers or item types
+* Can specify more specific fields for each type of item or worker, unique to that subclass
+
+############################
+
+Truck as class with parameters for dimensions
+--------
+* Called "truck" but represents any kind of land-based transport vehicle
+* Instantiate with dimensions for usage to determine amount of space available
+* Flexiblity: for new trucks, other types of vehicles, different sizes of products
+
+############################
+
+Staging Area as a new process step before loading
+--------
+* Last quality control check before transport to factory
+* Enables a second step of sequencing, if loading different items of different weight/fragility
+* To optimize loading order
+
+############################
+
+Zones in ReserveRoom same size and layout as on the floor
+--------
+* Ensure consistency in organization of product
+
+############################
+
+Unique string ID for each item (as toString method output as well)
+--------
+* Provides a unique tracking number for each item, since SKU only tells item type
+* Can include info in string about the item's status
+* Hashable attribute
+
+############################
+
+InventoryManager, RequestManager, SequencingManager, LoadingManager
+--------
+* Each helps workers at different stages of process communicate with each other
+* To localize information about each type of information that must be passed between processes and classes (e.g. PickingRequest, Order, WarehouseItems)
+
+############################
+
+RequestManager manages queuess of orders and order sets, and uses a map to match orders with WarehouseItems
+--------
+* Directs the manager of each stage of the warehouse process to give directions to workers
+* Moves orders from one queue (stage of process) to another
+* Can handle changes to the process, by adding a new queue for new processes, for example
+* Tracks statuses of orders, regardless of which stage they are in
+* Localized store of arrays for the manager of each stage to look up which products correspond to which orders
+* Flexibility: to handle new types of orders and reorganize stages
+
+############################
+
+Location's max and min capacity will be set to 0 until specified otherwise.
+---------
+*The Warehouse will be assumed to have no space until initialized, as to not assume a warehouse has a given space
+
+############################
+
+Location will take the place of Level, Rack, Zone, Aisle
+---------
+* By creating one object to hold all of the information of location, it removes all of the methods necessary to have
+the previous classes holding this information communicate with eachother and convert from one type to another. 
+* Takes 4 classes and turns it into one class
+
+############################

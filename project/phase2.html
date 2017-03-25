@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="generator" content="HTML Tidy for Mac OS X (vers 31 October 2006 - Apple Inc. build 15.18.1), see www.w3.org">
+        <title>
+            CSC207H: Project Phase 2
+        </title>
+    </head>
+    <body>
+        <h1>
+            CSC207H: Project Phase 2
+        </h1>
+        <p>
+            <strong>Group size:</strong> 3 or 4
+        </p>
+        <p>
+            <strong>Summary:</strong> Extend your phase 1 design with specification changes and prepare a group presentation.
+        </p>
+        <h2>
+            Learning objectives
+        </h2>
+        <p>
+            By the end of this project, you should have worked with your group to
+        </p>
+        <ul>
+            <li>read this handout thoroughly
+            </li>
+            <li>
+             meet together to read this handout <strong>together</strong>, discuss the implications of each point, and make a list of tasks that need to be done.
+            </li>
+            <li>reedesign your phase 1 code to incorporate a change in specification
+            </li>
+            <li>write a thorough test suite
+            </li>
+            <li>work with design patterns
+            </li>
+            <li>implement logging
+            </li>
+            <li>prepare a code walkthrough
+            </li>
+            <li>understand that submitting a lot of code that doesn't compile or doesn't run is far worse than submitting well-designed code that only has some of the features implemented</li>
+        </ul>
+        <h2>
+            Thoughts about design and about the project
+        </h2>
+        <h3>
+            Read this handout
+        </h3>
+        <p>
+            We spent hours and hours writing this handout so we clearly think it's important. Here is why you should read it carefully:
+        </p>
+        <ul>
+            <li>You are all going to work for hours and hours on it and we want you to understand the requirements before you start writing code.
+            </li>
+            <li>If you want to program for a living, you need to work on your software design and development skills. This project is modelled after a real-world project that actually happened.
+            </li>
+            <li>We're going to tell you about what parts are particular important for marks.
+            </li>
+        </ul>
+        <p>
+            After reading the handout alone, all of you should meet with your group and discuss each point in this entire handout.
+        </p>
+        <p>
+            This group reading might take you more than an hour: the goal is to make sure that everyone understands it. This will make reluctant group members more interested in contributing because they'll feel more involved and understand what needs to be done, so it should save everyone time. Also, you'll be clear on exactly what you need to do, so doing it will be faster.
+        </p>
+        <p>
+            Everyone should take a turn explaining a section of the handout: in a job, software design always involves discussing requirements. <em>You need to practice it.</em>
+        </p>
+        <p>
+            You and your group need to work hard, and you need to work together. If you can't agree on something, drop by office hours or post on the discussion board to get advice. Get it done one way or another: programs that run always get more marks than those that don't. Don't bully each other, though: talking to us about it might reveal an idea that is even better than your current options.
+        </p>
+        <h3>
+            System boundaries
+        </h3>
+        <p>
+            Something to think about: every system has communcation boundaries where it interacts with other devices. As you've discovered in phase 1, your system has boundaries where it interacts with the real world. In the warehouse, one boundary is the communication with the barcode readers. Another is the place &#8212; probably a computer &#8212; where orders are entered. A third is the warehouse traversal optimization. Are there any others?
+        </p>
+        <p>
+            When designing a system, identifying the boundaries is of course quite important, not only for design considerations but also because they should appear in the contract between the warehouse and the software developers.
+        </p>
+        <h3>
+            Design for testing
+        </h3>
+        <p>
+            Those of you who actively thought about software testing as you did your design did yourselves a service. Trying to write tests for a system after it has been implemented can be quite frustrating (although it's worthwhile).
+        </p>
+        <p>
+            Testing is a requirement for phase 2. If you haven't started writing and running unit tests as you develop, you should start phase 2 by writing a basic set of unit tests. Want to be a professional programmer? Learn how to develop unit tests as fast as you can so that you spend as little time on it as possible while still preventing buggy code. Eclipse can create a new JUnit test class for you, so figure out how to use it. We'll ask you about unit tests on the final exam.
+        </p>
+        <p>
+            Here is how to <a target="_blank" href="http://stackoverflow.com/questions/8964717/how-to-create-a-test-suite-in-eclipse-under-org-junit#8964850">create a JUnit test suite</a> so that you can run all the tests at once.
+        </p>
+        <h3>
+            Design for extensibility
+        </h3>
+        <p>
+            In the real world, if someone pays you do this project, then you have a product that other warehouses might want. Hopefully you own or have rights to the Intellectual Property (IP), so that you might sell it to other warehouses. Naturally, other warehouses will be configured differently, so your software should be useable elsewhere with as little modification as possible, in the extreme just by providing new configuration files. We'll be marking you on this.
+        </p>
+        <p>
+            Testing is a requirement for phase 2. If you haven't started testing, you should start phase 2 by writing as many tests as you can.
+        </p>
+        <h3>
+            Keeping the main program up to date
+        </h3>
+        <p>
+            Some of you waited until the last day to start writing your main method and found it quite hard to stitch everything together. A suggestion for the future is to start small, but start the simulation right away. Maybe just read the event file and print the contents. Then, handle events that involve orders. Then, think through the picking process, and so on.
+        </p>
+        <h2>
+            What to do for Phase 2
+        </h2>
+        <h3>
+            Refactoring
+        </h3>
+        <p>
+            During Phase 2, refactor proactively. Nobody owns the code in your group: everyone should feel free (after confirming with their group that refactoring is a good idea) to go in and edit any code. As you refactor, edit the test cases. Incorporate any design patterns that you think are appropriate.
+        </p>
+        <p>
+            Here are some major points that the TAs will be looking for. These will also help get your test coverage up as high as possible.
+        </p>
+        <ul>
+            <li>All your variables should be private, and you should only provide setters and getters if other classes actually need the information.
+            </li>
+            <li>Ideally, the only static member should be method <code>main</code>. If you have a static variable, you need to write a comment explaining why: is it a shortcut to having working that you recognize isn't perfect? Is it because you believe that even in a general setting you won't need more than one?
+            </li>
+        </ul>
+        <h3>
+            Testing
+        </h3>
+        <p>
+            Install EclEmma from the Eclipse Marketplace. The higher your test coverage, the higher your project mark. You should aim for as close to 100% as you can, because your raw mark will be multiplied by your code coverage.
+        </p>
+        <p>
+            We <strong>strongly</strong> recommend that you start Phase 2 by setting up some basic unit tests and making sure that everyone in the group can run them.
+        </p>
+        <h3>
+            Files from Phase 1
+        </h3>
+        <p>
+            Update the <code>duties.txt</code>, <code>help.txt</code>, and <code>design.pdf</code> files to reflect only Phase 2 work.  What have you contributed to the team since you first read this handout?  Remember, every group member needs to write their own.
+        </p>
+        <h3>
+            Logging
+        </h3>
+        <p>
+            In Phase 1, many groups used print statements to simulate your system sending messages to workers through barcode readers. For Phase 2, use both a <code>ConsoleHandler</code> and a <code>FileHandler</code> (as discussed in lecture). You need to log at least these things to both the console and to <code>project/log.txt</code>:
+        </p>
+        <ul>
+            <li>The events
+            </li>
+            <li>The messages that the system sends to the barcode readers
+            </li>
+            <li>The messages the barcode readers sends to the system
+            </li>
+            <li>The lines from the event input file
+            </li>
+            <p>In the log, it should be clear what the input events to you system are, and what the output events are.
+            </p>
+        </ul>
+        <h3>
+            Requirements for the event file
+        </h3>
+        <p>
+            For Phase 2, your program must have the following features (which may differ from how you did Phase 1, but are now required):
+        </p>
+        <ul>
+            <li>Your program should take the name of an event file (like <code>16orders.txt</code>) as a command-line argument, so that filname will be at index <code>0</code> in <code>main</code>'s parameter <code>args</code>. On the command line, the command will look something like this: <code>java warehouse/Warehouse ../16orders.txt</code>. Notice that the argument is the relative path to the event file. In Eclipse, to add such an argument, right-click on the project, select <code>Run As -&gt; Run Configurations</code>, click the <code>Arguments</code> tab, and type <code>../16orders.txt</code> (or whatever file you want) in the <code>Program Arguments</code> box.  Everyone should learn how to do this, so we suggest figuring it out as your group. We are considering whether to ask questions about it on the final exam.</strong>
+            </li>
+            <li>Every worker (pickers, sequencers, loaders, and replenishers) should have an event announcing the worker is ready. The <code>16orders.txt</code> file currently only has this kind of event for pickers, so you'll have to add the others if you haven't already.
+            </li>
+            <li>There should be a "rescan" event at all times for having a sequencer or a loader re-try the the barcode scanning. Something like "Sequencer Sue rescans" for when Sue wants to start over scanning the SKUs, and then the simulation has events for Sue to start again with the first SKU on the sequenced pallets.
+            </li>
+            <li>A picking event (the ones that look like "Picker Paul pick 1") represents the event where a picker uses their barcode scanner on a fascia barcode, after putting it on the forklift. For Phase 2, the number is the SKU of the fascia. Your simulation should read that event from the event file and tell your system that it happened. Your system should respond by checking the SKU against what it told the picker to pick. Notice that this means that the system tells the picker to get one SKU at a time, rather than sending all 8 at once.
+            </li>
+            <li>Sequencers must use their barcode reader on all 8 fascia, one at a time, and the system must respond with a message saying whether the number is correct. Notice that this means that there are 8 sequencing events for each set of 4 orders. When all 8 have been confirmed, the system must tell a loader that it's time to load.
+            </li>
+            <li>Loaders must have similar events to scanners because they rescan everything, and the system should confirm them.
+            </li>
+            <li>SKUs may be many digits long, and they may include letters.
+            </li>
+            <li>Pickers may make mistakes. If they scan the wrong SKU, your system should tell them that, and in the same message repeat the instruction with the correct SKU. Note that this means that a picker may be told to pick something more than 8 times in order to get 8 fascia.
+            </li>
+            <li>Even with that rule, pickers may arrive at the marshalling area with an incorrect fascia. If the sequencer detects this, remember that the whole set get thrown out, and the system should tell the picker to get a replacement set of 8 fascia. Notice that this means that no loaders can load until this is fixed.
+            </li>
+        </ul>
+        <h2>
+            Presentation
+        </h2>
+        <p>
+            Software Walkthrough: "A static analysis technique in which a designer or programmer leads members of the development team and other interested parties through a software product, and the participants ask questions and make comments about possible errors, violation of development standards, and other problems." (<a href="https://en.wikipedia.org/wiki/IEEE">IEEE</a> Std. 1028-1997, IEEE Standard for Software Reviews, clause 3.8)
+        </p>
+        <p>
+            The Phase 2 marking will take place in the last two weeks of class. (We will post a signup sheet on the web very soon.) You and your group will present your project to 2 TAs as if it were a software walkthrough. They may ask questions while you present, or they may wait until after the presentation. Your presentation should last no more than 15 minutes, plus at least 5 minutes for TA questions. Each of you may be asked about any of the code, including the test cases, design patterns, UML, and other implementation details.
+        </p>
+        <p>
+            Every group members must present for at least 3 of the 15 minutes. Plan carefully.
+        </p>
+        <p>
+            By the Phase 2 due date, you must commit a file called <code>project/walkthrough.pdf</code> that contains an outline of your presentation. You should cover at least these points:
+        </p>
+        <ul>
+            <li>What are the most important classes in your program?
+            </li>
+            <li>How is the event file processed and what happens after you read an event?  Everyone should be able to explain the series of methods that get called.  We're going to ask you to do this in the interview, and your individual grade will depend on it.  This is worth 25% of the project mark.
+            </li>
+            <li>What data are you keeping track of, and how are you keeping track of it?
+            </li>
+            <li>What design patterns did you use, if any? What problems do each of them solve?
+            </li>
+            <li>What is your unit test coverage?
+            </li>
+        </ul>
+        <p>
+            When you present, you will be expected to discuss your code in detail with the TAs as you walk through your system.
+        </p>
+        <h2>
+            What to push?
+        </h2>
+        <ul>
+            <li>Your code, of course, including the unit tests.
+            </li>
+            <li>
+                 <code>project/help.txt</code> (<strong>High priority, do this early</strong>): a concise and clear set of instructions that describe:
+                <ul>
+                    <li>how to compile and run your code from the command line. Note that we should not have to move any files or do any special setup. We should be able to copy and paste your instructions into a Teaching Labs terminal all at once and see your program compile and run. (We should also be able to open your project, in directory <code>project/src</code>, in Eclipse.)
+                    </li>
+                </ul>
+                    <li>a couple of different event input files that test different event sequences.  Make sure they are easy to find, hopefully with a similar name as the one you mention in <code>help.txt</code>.
+                    </li>
+
+
+            </li>
+            <li>
+                <code>project/duties.txt</code>: each group member should describe what they contributed to phase 1 in <strong>100 words or less</strong>. Bullet points are fine. You are encouraged to discuss this with your group. Note that all group members will be editing the same document. We will be checking git logs to make sure that each person is the one that commits a description of their contributions. Part of your individual mark will depend on how much you contribute and the quality of your contributions. (If you feel harassed in any way, please let Lindsey or Paul know right away that you're having difficulty. We'll meet with each team member individually, including you, and try to help your group work through their issues. If necessary, we'll dissolve the group and help you find another one.)
+            </li>
+            <li>
+                <code>project/design.pdf</code>: a UML diagram of your project. Your final version should reflect exactly what is in the code when you do your final push.  If you auto-generate it, move the classes around so that it's clear what the various parts are.  We'll be marking you on this.
+            </li>
+        </ul>
+    </body>
+</html>

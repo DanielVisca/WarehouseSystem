@@ -1,0 +1,32 @@
+Excecution:
+  cd to directory group_0368/project/ 
+  Paste commands:
+    javac -sourcepath ./src -d ./bin ./src/warehouse/*.java
+    java -cp ./bin warehouse.WarehouseSystem
+
+Simulation print log numbers correspond with input line numbers.
+
+Input files:
+  order input: orders.txt
+  inventory layout: traversal_table.csv
+  inventory input: initial.csv
+  order translation: translation.csv
+
+  Rules for order input:
+    Worker must report "ready" before they can perform task
+    Pickers must pick corresponding sku
+    When jobs are discarded Picker must start pick again
+
+Generated files:
+  order output: orders.csv
+  inventory output: final.csv
+
+Test files are in package test:
+  FileHelperTests.java
+  LocationTest.java
+  ManagerTests.java
+  PalletTest.java
+  TruckTest.java
+  WarehouseTests.java
+
+  Screencap of coverage: eclemma_output.jpg

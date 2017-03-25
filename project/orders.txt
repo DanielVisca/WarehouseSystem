@@ -1,0 +1,77 @@
+Order SES Blue
+Order SE Red
+Order SE Black
+Order SE Black
+Picker Alice ready
+Order S Beige
+Order SES Green
+Order SE White
+Picker Alice pick 37
+Order SE Beige
+Picker Alice pick 38
+Picker Alice pick 19
+Order SE Blue
+Order S Green
+Order SES Green
+Order S White
+Picker Bob ready
+Picker Alice pick 20
+Picker Bob pick 9
+Picker Alice pick 43
+Picker Bob pick 10
+Order SES Black
+Picker Bob pick 29
+Picker Alice pick 44
+Picker Bob pick 30
+Picker Bob pick 3
+Picker Alice pick 43
+Order SE Blue
+Picker Alice pick 44
+Order S White
+Picker Alice to Marshaling
+Sequencer Sue ready
+Picker Bob pick 4
+Picker Bob pick 11
+Picker Alice ready
+Picker Alice pick 35
+Sequencer Sue sequences
+Sequencer Sue ready
+Loader Bill ready
+Picker Alice pick 36
+Loader Bill loads
+Loader Bill ready
+Order S White
+Picker Bob pick 12
+Picker Alice pick 25
+Picker Bob to Marshaling
+Picker Alice pick 26
+Picker Bob ready
+Picker Alice pick 29
+Picker Bob pick 45
+Picker Bob pick 46
+Picker Alice pick 30
+Picker Bob pick 35
+Sequencer Sue sequences
+Picker Bob pick 36
+Sequencer Sue ready
+Picker Alice pick 1
+Loader Bill loads
+Picker Alice pick 2
+Picker Bob pick 1
+Loader Bill ready
+Picker Alice to Marshaling
+Picker Bob pick 2
+Sequencer Sue sequences
+Picker Bob pick 1
+Sequencer Sue ready
+Replenisher Ruby ready
+Replenisher Ruby replenish 2
+Picker Bob pick 2
+Replenisher Ruby ready
+Loader Bill loads
+Loader Bill ready
+Picker Bob to Marshaling
+Sequencer Sue sequences
+Sequencer Sue ready
+Loader Bill loads
+Loader Bill ready

@@ -1,0 +1,94 @@
+WarehouseSystem
+  Organize Managers and give orders
+  Organize Workers and give orders
+  Take system inputs
+  Log worker status in log.txt
+  Check worker status
+  Utilizes 16orders.txt
+
+InventoryManager
+  Keep track of current inventory
+  Organize floor zones
+  Dispatch Replenishers
+  Discard items
+  Manage trucks
+
+JobManager
+  Process/translate orders
+  Manager translation table
+  Create Job and send to PickingManager 
+  Monitor Job status
+  Hand off Job
+  Utilizes translation.csv
+
+ProcessManager
+  Keeps queue of Jobs
+  Report to JobManager
+  When job finished, deliver job to OrderManager
+
+PickingManager
+  Report to JobManager once picked
+
+SequencingManager
+  Report to JobManager once sequenced
+
+LoadingManager
+  Report to JobManager once loaded
+
+Job
+  Unique ID
+  Orders per job
+  Map of SKU and their location
+  Store order items
+  Utilitizes traversal_table.csv
+
+WarehouseItem
+  Status of the item
+  SKU
+
+Fascia
+ 
+Worker
+  Unique ID
+  Report job completion 
+  Report status to WarehouseSystem
+  Receive orders from JobManager
+  Complete job and hand to JobManager
+
+Picker
+  Pick items and record SKUs
+  Report inventory
+  Hand off fully picked orders to JobManager for sequencing
+
+Sequencer
+  Sequence and inspect items from job to Pallet
+  Verify items SKU sequence
+  Discard erroneous items through InventoryManager
+  Hand off correctly sequenced pallets to RequestManager for loading
+
+Loader
+  Load pallets in trucks
+  Verify item SKU sequence and loading order
+  Discard erroneous items through InventoryManager
+  Complete job and okay truck to leave
+
+Replenisher
+  Replenish racks from ReserveRoom
+
+Truck
+  Check ammount filled
+  Leave the warehouse
+  Dimensions
+  
+Zone
+  Stores ailes as an array of racks
+
+Rack
+  Stores levels as stacks
+  Levels have limits
+  Keep track of inventory
+
+ReserveRoom
+  Store crates of items
+
+ 

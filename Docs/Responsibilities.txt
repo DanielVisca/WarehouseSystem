@@ -1,0 +1,40 @@
+All
+  All variables should be private with getters/setters
+    Double check the getters and setters are actually needed
+
+Daniel
+  Verify traversal table
+
+  Take event, traversal and inventory file as main arg
+    Zone input
+
+  Look for design patterns
+
+  Sequencer and Loader scanning and rescanning
+    Sequencer has orders to scan each sku
+
+Jamie
+  SKU to string (job)
+  Finalize logging
+    ConsoleHandler
+    FileHandler
+
+  Picker can catchs a false scan, tell them to pick right one again
+    Exceptions
+
+  Look for design patterns
+
+Maggie
+  UML
+  SKU to string (location)
+  Improve flexibility of Zones
+    Zones need to be able to have any name
+    Zones should allow for more flexibility in their dimensions
+  Get rid of unjustified static classes 
+    WarehousePicking is the only one, should be integrated into InventoryManager, FileHelper is fine if we write justification
+
+Queenie
+  JUnit test suite
+  walkthrough.pdf
+
+
