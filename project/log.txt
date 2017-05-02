@@ -1,0 +1,337 @@
+INFO:   0: Initializing Warehouse                                       :WarehouseSystem
+INFO:      Item 2 at A 0 0 1 needs replenishing                         :InventoryManager
+INFO:      Item 31 at B 0 1 2 needs replenishing                        :InventoryManager
+INFO:   1: IN: Order SES Blue (1/4)                                     :JobManager
+INFO:   2: IN: Order SE Red (2/4)                                       :JobManager
+INFO:   3: IN: Order SE Black (3/4)                                     :JobManager
+INFO:   4: IN: Order SE Black (4/4)                                     :JobManager
+INFO:      Job 37-38-19-20-43-44-43-44 ready for picking                :WarehouseSystem
+INFO:   5: IN: Picker Alice ready                                       :Picker
+INFO:      Picker Alice starting job 37-38-19-20-43-44-43-44            :Picker
+INFO:      Picker Alice instructed to pick 37 from B 1 0 0              :Picker
+INFO:   6: IN: Order S Beige (1/4)                                      :JobManager
+INFO:   7: IN: Order SES Green (2/4)                                    :JobManager
+INFO:   8: IN: Order SE White (3/4)                                     :JobManager
+INFO:   9: IN: Picker Alice pick 37                                     :Picker
+INFO:      Item 37 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 38 from B 1 0 1              :Picker
+INFO:  10: IN: Order SE Beige (4/4)                                     :JobManager
+INFO:      Job 9-10-29-30-3-4-11-12 ready for picking                   :WarehouseSystem
+INFO:  11: IN: Picker Alice pick 38                                     :Picker
+INFO:      Item 38 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 19 from A 1 1 2              :Picker
+INFO:  12: IN: Picker Alice pick 19                                     :Picker
+INFO:      Item 19 at A 1 1 2 needs replenishing                        :InventoryManager
+INFO:      Item 19 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 20 from A 1 1 3              :Picker
+INFO:  13: IN: Order SE Blue (1/4)                                      :JobManager
+INFO:  14: IN: Order S Green (2/4)                                      :JobManager
+INFO:  15: IN: Order SES Green (3/4)                                    :JobManager
+INFO:  16: IN: Order S White (4/4)                                      :JobManager
+INFO:      Job 35-36-25-26-29-30-1-2 ready for picking                  :WarehouseSystem
+INFO:  17: IN: Picker Bob ready                                         :Picker
+INFO:      Picker Bob starting job 9-10-29-30-3-4-11-12                 :Picker
+INFO:      Picker Bob instructed to pick 9 from A 0 2 0                 :Picker
+INFO:  18: IN: Picker Alice pick 20                                     :Picker
+INFO:      Item 20 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 43 from B 1 1 2              :Picker
+INFO:  19: IN: Picker Bob pick 9                                        :Picker
+INFO:      Item 9 removed from inventory                                :WarehouseSystem
+INFO:      Picker Bob instructed to pick 10 from A 0 2 1                :Picker
+INFO:  20: IN: Picker Alice pick 43                                     :Picker
+INFO:      Item 43 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 44 from B 1 1 3              :Picker
+INFO:  21: IN: Picker Bob pick 10                                       :Picker
+INFO:      Item 10 removed from inventory                               :WarehouseSystem
+INFO:      Picker Bob instructed to pick 29 from B 0 1 0                :Picker
+INFO:  22: IN: Order SES Black (1/4)                                    :JobManager
+INFO:  23: IN: Picker Bob pick 29                                       :Picker
+INFO:      Item 29 removed from inventory                               :WarehouseSystem
+INFO:      Picker Bob instructed to pick 30 from B 0 1 1                :Picker
+INFO:  24: IN: Picker Alice pick 44                                     :Picker
+INFO:      Item 44 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 43 from B 1 1 2              :Picker
+INFO:  25: IN: Picker Bob pick 30                                       :Picker
+INFO:      Item 30 removed from inventory                               :WarehouseSystem
+INFO:      Picker Bob instructed to pick 3 from A 0 0 2                 :Picker
+INFO:  26: IN: Picker Bob pick 3                                        :Picker
+INFO:      Item 3 removed from inventory                                :WarehouseSystem
+INFO:      Picker Bob instructed to pick 4 from A 0 0 3                 :Picker
+INFO:  27: IN: Picker Alice pick 43                                     :Picker
+INFO:      Item 43 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 44 from B 1 1 3              :Picker
+INFO:  28: IN: Order SE Blue (2/4)                                      :JobManager
+INFO:  29: IN: Picker Alice pick 44                                     :Picker
+INFO:      Item 44 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to go to marshalling                 :Picker
+INFO:  30: IN: Order S White (3/4)                                      :JobManager
+INFO:  31: IN: Picker Alice to marshalling                              :Picker
+INFO:      Job 37-38-19-20-43-44-43-44 ready for sequencing             :WarehouseSystem
+INFO:  32: IN: Sequencer Sue ready                                      :Sequencer
+INFO:      Sequencer Sue starting job 37-38-19-20-43-44-43-44           :Sequencer
+INFO:      Sequencer Sue instructed to sequence 37-38-19-20-43-44-43-44 :Sequencer
+INFO:  33: IN: Picker Bob pick 4                                        :Picker
+INFO:      Item 4 removed from inventory                                :WarehouseSystem
+INFO:      Picker Bob instructed to pick 11 from A 0 2 2                :Picker
+INFO:  34: IN: Picker Bob pick 11                                       :Picker
+INFO:      Item 11 removed from inventory                               :WarehouseSystem
+INFO:      Picker Bob instructed to pick 12 from A 0 2 3                :Picker
+INFO:  35: IN: Picker Alice ready                                       :Picker
+INFO:      Picker Alice starting job 35-36-25-26-29-30-1-2              :Picker
+INFO:      Picker Alice instructed to pick 35 from B 0 2 2              :Picker
+INFO:  36: IN: Sequencer Sue sequences 37                               :Sequencer
+INFO:      Item 37 in correct sequence                                  :SequencingManager
+INFO:  37: IN: Sequencer Sue sequences 19                               :Sequencer
+INFO:      Item 19 in correct sequence                                  :SequencingManager
+INFO:  38: IN: Sequencer Sue sequences 43                               :Sequencer
+INFO:      Item 43 in correct sequence                                  :SequencingManager
+INFO:  39: IN: Sequencer Sue sequences 43                               :Sequencer
+INFO:      Item 43 in correct sequence                                  :SequencingManager
+INFO:  40: IN: Picker Alice pick 35                                     :Picker
+INFO:      Item 35 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 36 from B 0 2 3              :Picker
+INFO:  41: IN: Sequencer Sue sequences 38                               :Sequencer
+INFO:      Item 38 in correct sequence                                  :SequencingManager
+INFO:  42: IN: Sequencer Sue sequences 20                               :Sequencer
+INFO:      Item 20 in correct sequence                                  :SequencingManager
+INFO:  43: IN: Sequencer Sue sequences 44                               :Sequencer
+INFO:      Item 44 in correct sequence                                  :SequencingManager
+INFO:  44: IN: Sequencer Sue sequences 44                               :Sequencer
+INFO:      Item 44 in correct sequence                                  :SequencingManager
+INFO:  45: IN: Sequencer Sue to loading                                 :Sequencer
+INFO:      Job 37-38-19-20-43-44-43-44 ready for loading                :WarehouseSystem
+INFO:  46: IN: Sequencer Sue ready                                      :Sequencer
+INFO:  47: IN: Loader Bill ready                                        :Loader
+INFO:      Loader Bill starting job 37-38-19-20-43-44-43-44             :Loader
+INFO:      Loader Bill instructed to load 37-38-19-20-43-44-43-44       :Loader
+INFO:  48: IN: Picker Alice pick 36                                     :Picker
+INFO:      Item 36 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 25 from B 0 0 0              :Picker
+INFO:  49: IN: Loader Bill scans 37                                     :Loader
+INFO:      Item 37 in correct sequence                                  :Loader
+INFO:  50: IN: Loader Bill scans 19                                     :Loader
+INFO:      Item 19 in correct sequence                                  :Loader
+INFO:  51: IN: Loader Bill scans 43                                     :Loader
+INFO:      Item 43 in correct sequence                                  :Loader
+INFO:  52: IN: Loader Bill scans 43                                     :Loader
+INFO:      Item 43 in correct sequence                                  :Loader
+INFO:  53: IN: Loader Bill scans 38                                     :Loader
+INFO:      Item 38 in correct sequence                                  :Loader
+INFO:  54: IN: Loader Bill scans 20                                     :Loader
+INFO:      Item 20 in correct sequence                                  :Loader
+INFO:  55: IN: Loader Bill scans 44                                     :Loader
+INFO:      Item 44 in correct sequence                                  :Loader
+INFO:  56: IN: Loader Bill scans 44                                     :Loader
+INFO:      Item 44 in correct sequence                                  :Loader
+INFO:  57: IN: Picker Alice pick 25                                     :Picker
+INFO:      Item 25 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 26 from B 0 0 1              :Picker
+INFO:  58: IN: Loader Bill rescans                                      :Loader
+INFO:  59: IN: Loader Bill scans 37                                     :Loader
+INFO:      Item 37 in correct sequence                                  :Loader
+INFO:  60: IN: Loader Bill scans 19                                     :Loader
+INFO:      Item 19 in correct sequence                                  :Loader
+INFO:  61: IN: Loader Bill scans 43                                     :Loader
+INFO:      Item 43 in correct sequence                                  :Loader
+INFO:  62: IN: Loader Bill scans 43                                     :Loader
+INFO:      Item 43 in correct sequence                                  :Loader
+INFO:  63: IN: Loader Bill scans 38                                     :Loader
+INFO:      Item 38 in correct sequence                                  :Loader
+INFO:  64: IN: Loader Bill scans 20                                     :Loader
+INFO:      Item 20 in correct sequence                                  :Loader
+INFO:  65: IN: Loader Bill scans 44                                     :Loader
+INFO:      Item 44 in correct sequence                                  :Loader
+INFO:  66: IN: Loader Bill scans 44                                     :Loader
+INFO:      Item 44 in correct sequence                                  :Loader
+INFO:  67: IN: Loader Bill loads                                        :Loader
+INFO:      Job 37-38-19-20-43-44-43-44 loaded on a truck                :WarehouseSystem
+INFO:      SES Blue is on a truck                                       :LoadingManager
+INFO:      SE Red is on a truck                                         :LoadingManager
+INFO:      SE Black is on a truck                                       :LoadingManager
+INFO:      SE Black is on a truck                                       :LoadingManager
+INFO:  68: IN: Loader Bill ready                                        :Loader
+INFO:  69: IN: Order S White (4/4)                                      :JobManager
+INFO:      Job 45-46-35-36-1-2-1-2 ready for picking                    :WarehouseSystem
+INFO:  70: IN: Picker Bob pick 12                                       :Picker
+INFO:      Item 12 removed from inventory                               :WarehouseSystem
+INFO:      Picker Bob instructed to go to marshalling                   :Picker
+INFO:  71: IN: Picker Bob to marshalling                                :Picker
+INFO:      Job 9-10-29-30-3-4-11-12 ready for sequencing                :WarehouseSystem
+INFO:      Sequencer Sue starting job 9-10-29-30-3-4-11-12              :Sequencer
+INFO:      Sequencer Sue instructed to sequence 9-10-29-30-3-4-11-12    :Sequencer
+INFO:  72: IN: Picker Alice pick 26                                     :Picker
+INFO:      Item 26 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 29 from B 0 1 0              :Picker
+INFO:  73: IN: Picker Bob ready                                         :Picker
+INFO:      Picker Bob starting job 45-46-35-36-1-2-1-2                  :Picker
+INFO:      Picker Bob instructed to pick 45 from B 1 2 0                :Picker
+INFO:  74: IN: Sequencer Sue sequences 9                                :Sequencer
+INFO:      Item 9 in correct sequence                                   :SequencingManager
+INFO:  75: IN: Picker Alice pick 29                                     :Picker
+INFO:      Item 29 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 30 from B 0 1 1              :Picker
+INFO:  76: IN: Picker Bob pick 45                                       :Picker
+INFO:      Item 45 removed from inventory                               :WarehouseSystem
+INFO:      Picker Bob instructed to pick 46 from B 1 2 1                :Picker
+INFO:  77: IN: Sequencer Sue sequences 29                               :Sequencer
+INFO:      Item 29 in correct sequence                                  :SequencingManager
+INFO:  78: IN: Sequencer Sue sequences 3                                :Sequencer
+INFO:      Item 3 in correct sequence                                   :SequencingManager
+INFO:  79: IN: Picker Bob pick 46                                       :Picker
+INFO:      Item 46 removed from inventory                               :WarehouseSystem
+INFO:      Picker Bob instructed to pick 35 from B 0 2 2                :Picker
+INFO:  80: IN: Picker Alice pick 30                                     :Picker
+INFO:      Item 30 removed from inventory                               :WarehouseSystem
+INFO:      Picker Alice instructed to pick 1 from A 0 0 0               :Picker
+INFO:  81: IN: Picker Bob pick 35                                       :Picker
+INFO:      Item 35 removed from inventory                               :WarehouseSystem
+INFO:      Picker Bob instructed to pick 36 from B 0 2 3                :Picker
+INFO:  82: IN: Sequencer Sue sequences 11                               :Sequencer
+INFO:      Item 11 in correct sequence                                  :SequencingManager
+INFO:  83: IN: Sequencer Sue sequences 10                               :Sequencer
+INFO:      Item 10 in correct sequence                                  :SequencingManager
+INFO:  84: IN: Sequencer Sue sequences 30                               :Sequencer
+INFO:      Item 30 in correct sequence                                  :SequencingManager
+INFO:  85: IN: Sequencer Sue sequences 4                                :Sequencer
+INFO:      Item 4 in correct sequence                                   :SequencingManager
+INFO:  86: IN: Sequencer Sue sequences 12                               :Sequencer
+INFO:      Item 12 in correct sequence                                  :SequencingManager
+INFO:  87: IN: Sequencer Sue to loading                                 :Sequencer
+INFO:      Job 9-10-29-30-3-4-11-12 ready for loading                   :WarehouseSystem
+INFO:      Loader Bill starting job 9-10-29-30-3-4-11-12                :Loader
+INFO:      Loader Bill instructed to load 9-10-29-30-3-4-11-12          :Loader
+INFO:  88: IN: Picker Bob pick 36                                       :Picker
+INFO:      Item 36 removed from inventory                               :WarehouseSystem
+INFO:      Picker Bob instructed to pick 1 from A 0 0 0                 :Picker
+INFO:  89: IN: Sequencer Sue ready                                      :Sequencer
+INFO:  90: IN: Picker Alice pick 1                                      :Picker
+INFO:      Item 1 removed from inventory                                :WarehouseSystem
+INFO:      Picker Alice instructed to pick 2 from A 0 0 1               :Picker
+INFO:  91: IN: Loader Bill scans 9                                      :Loader
+INFO:      Item 9 in correct sequence                                   :Loader
+INFO:  92: IN: Loader Bill scans 29                                     :Loader
+INFO:      Item 29 in correct sequence                                  :Loader
+INFO:  93: IN: Loader Bill scans 3                                      :Loader
+INFO:      Item 3 in correct sequence                                   :Loader
+INFO:  94: IN: Loader Bill scans 11                                     :Loader
+INFO:      Item 11 in correct sequence                                  :Loader
+INFO:  95: IN: Picker Alice pick 2                                      :Picker
+INFO:      Item 2 removed from inventory                                :WarehouseSystem
+INFO:      Picker Alice instructed to go to marshalling                 :Picker
+INFO:  96: IN: Picker Bob pick 1                                        :Picker
+INFO:      Item 1 removed from inventory                                :WarehouseSystem
+INFO:      Picker Bob instructed to pick 2 from A 0 0 1                 :Picker
+INFO:  97: IN: Loader Bill scans 10                                     :Loader
+INFO:      Item 10 in correct sequence                                  :Loader
+INFO:  98: IN: Loader Bill scans 30                                     :Loader
+INFO:      Item 30 in correct sequence                                  :Loader
+INFO:  99: IN: Loader Bill scans 4                                      :Loader
+INFO:      Item 4 in correct sequence                                   :Loader
+INFO: 100: IN: Loader Bill scans 12                                     :Loader
+INFO:      Item 12 in correct sequence                                  :Loader
+INFO: 101: IN: Loader Bill loads                                        :Loader
+INFO:      Job 9-10-29-30-3-4-11-12 loaded on a truck                   :WarehouseSystem
+INFO:      S Beige is on a truck                                        :LoadingManager
+INFO:      SES Green is on a truck                                      :LoadingManager
+INFO:      SE White is on a truck                                       :LoadingManager
+INFO:      SE Beige is on a truck                                       :LoadingManager
+INFO: 102: IN: Loader Bill ready                                        :Loader
+INFO: 103: IN: Picker Alice to marshalling                              :Picker
+INFO:      Job 35-36-25-26-29-30-1-2 ready for sequencing               :WarehouseSystem
+INFO:      Sequencer Sue starting job 35-36-25-26-29-30-1-2             :Sequencer
+INFO:      Sequencer Sue instructed to sequence 35-36-25-26-29-30-1-2   :Sequencer
+INFO: 104: IN: Sequencer Sue sequences 35                               :Sequencer
+INFO:      Item 35 in correct sequence                                  :SequencingManager
+INFO: 105: IN: Sequencer Sue sequences 25                               :Sequencer
+INFO:      Item 25 in correct sequence                                  :SequencingManager
+INFO: 106: IN: Sequencer Sue sequences 29                               :Sequencer
+INFO:      Item 29 in correct sequence                                  :SequencingManager
+INFO: 107: IN: Sequencer Sue sequences 1                                :Sequencer
+INFO:      Item 1 in correct sequence                                   :SequencingManager
+INFO: 108: IN: Picker Bob pick 2                                        :Picker
+INFO:      Item 2 removed from inventory                                :WarehouseSystem
+INFO:      Picker Bob instructed to pick 1 from A 0 0 0                 :Picker
+INFO: 109: IN: Sequencer Sue sequences 36                               :Sequencer
+INFO:      Item 36 in correct sequence                                  :SequencingManager
+INFO: 110: IN: Sequencer Sue sequences 26                               :Sequencer
+INFO:      Item 26 in correct sequence                                  :SequencingManager
+INFO: 111: IN: Picker Bob pick 1                                        :Picker
+INFO:      Item 1 removed from inventory                                :WarehouseSystem
+INFO:      Picker Bob instructed to pick 2 from A 0 0 1                 :Picker
+INFO: 112: IN: Sequencer Sue sequences 30                               :Sequencer
+INFO:      Item 30 in correct sequence                                  :SequencingManager
+INFO: 113: IN: Sequencer Sue sequences 2                                :Sequencer
+INFO:      Item 2 in correct sequence                                   :SequencingManager
+INFO: 114: IN: Sequencer Sue to loading                                 :Sequencer
+INFO:      Job 35-36-25-26-29-30-1-2 ready for loading                  :WarehouseSystem
+INFO:      Loader Bill starting job 35-36-25-26-29-30-1-2               :Loader
+INFO:      Loader Bill instructed to load 35-36-25-26-29-30-1-2         :Loader
+INFO: 115: IN: Sequencer Sue ready                                      :Sequencer
+INFO: 116: IN: Replenisher Ruby ready                                   :Replenisher
+INFO:      Replenisher Ruby starting job 2                              :Replenisher
+INFO:      Replenisher Ruby instructed to replenish 2 at A 0 0 1        :Replenisher
+INFO: 117: IN: Replenisher Ruby replenish 2                             :Replenisher
+INFO:      Item 2 replenished                                           :WarehouseSystem
+INFO: 118: IN: Picker Bob pick 2                                        :Picker
+INFO:      Item 2 removed from inventory                                :WarehouseSystem
+INFO:      Picker Bob instructed to go to marshalling                   :Picker
+INFO: 119: IN: Loader Bill scans 35                                     :Loader
+INFO:      Item 35 in correct sequence                                  :Loader
+INFO: 120: IN: Loader Bill scans 25                                     :Loader
+INFO:      Item 25 in correct sequence                                  :Loader
+INFO: 121: IN: Loader Bill scans 29                                     :Loader
+INFO:      Item 29 in correct sequence                                  :Loader
+INFO: 122: IN: Replenisher Ruby ready                                   :Replenisher
+INFO:      Replenisher Ruby starting job 31                             :Replenisher
+INFO:      Replenisher Ruby instructed to replenish 31 at B 0 1 2       :Replenisher
+INFO: 123: IN: Loader Bill scans 1                                      :Loader
+INFO:      Item 1 in correct sequence                                   :Loader
+INFO: 124: IN: Loader Bill scans 36                                     :Loader
+INFO:      Item 36 in correct sequence                                  :Loader
+INFO: 125: IN: Loader Bill scans 26                                     :Loader
+INFO:      Item 26 in correct sequence                                  :Loader
+INFO: 126: IN: Loader Bill scans 30                                     :Loader
+INFO:      Item 30 in correct sequence                                  :Loader
+INFO: 127: IN: Loader Bill scans 2                                      :Loader
+INFO:      Item 2 in correct sequence                                   :Loader
+INFO: 128: IN: Loader Bill loads                                        :Loader
+INFO:      Job 35-36-25-26-29-30-1-2 loaded on a truck                  :WarehouseSystem
+INFO:      SE Blue is on a truck                                        :LoadingManager
+INFO:      S Green is on a truck                                        :LoadingManager
+INFO:      SES Green is on a truck                                      :LoadingManager
+INFO:      S White is on a truck                                        :LoadingManager
+INFO: 129: IN: Loader Bill ready                                        :Loader
+INFO: 130: IN: Picker Bob to marshalling                                :Picker
+INFO:      Job 45-46-35-36-1-2-1-2 ready for sequencing                 :WarehouseSystem
+INFO:      Sequencer Sue starting job 45-46-35-36-1-2-1-2               :Sequencer
+INFO:      Sequencer Sue instructed to sequence 45-46-35-36-1-2-1-2     :Sequencer
+INFO: 131: IN: Sequencer Sue sequences 45                               :Sequencer
+INFO:      Item 45 in correct sequence                                  :SequencingManager
+INFO: 132: IN: Sequencer Sue sequences 35                               :Sequencer
+INFO:      Item 35 in correct sequence                                  :SequencingManager
+INFO: 133: IN: Sequencer Sue sequences 1                                :Sequencer
+INFO:      Item 1 in correct sequence                                   :SequencingManager
+INFO: 134: IN: Sequencer Sue sequences 1                                :Sequencer
+INFO:      Item 1 in correct sequence                                   :SequencingManager
+INFO: 135: IN: Replenisher Ruby replenish 31                            :Replenisher
+INFO:      Item 31 replenished                                          :WarehouseSystem
+INFO: 136: IN: Sequencer Sue sequences 46                               :Sequencer
+INFO:      Item 46 in correct sequence                                  :SequencingManager
+INFO: 137: IN: Sequencer Sue sequences 36                               :Sequencer
+INFO:      Item 36 in correct sequence                                  :SequencingManager
+INFO: 138: IN: Sequencer Sue sequences 2                                :Sequencer
+INFO:      Item 2 in correct sequence                                   :SequencingManager
+INFO: 139: IN: Sequencer Sue sequences 2                                :Sequencer
+INFO:      Item 2 in correct sequence                                   :SequencingManager
+INFO: 140: IN: Sequencer Sue to loading                                 :Sequencer
+INFO:      Job 45-46-35-36-1-2-1-2 ready for loading                    :WarehouseSystem
+INFO:      Loader Bill starting job 45-46-35-36-1-2-1-2                 :Loader
+INFO:      Loader Bill instructed to load 45-46-35-36-1-2-1-2           :Loader
+INFO: 141: IN: Sequencer Sue ready                                      :Sequencer
+INFO: 142: IN: Loader Bill loads                                        :Loader
+INFO:      Job 45-46-35-36-1-2-1-2 loaded on a truck                    :WarehouseSystem
+INFO:      SES Black is on a truck                                      :LoadingManager
+INFO:      SE Blue is on a truck                                        :LoadingManager
+INFO:      S White is on a truck                                        :LoadingManager
+INFO:      S White is on a truck                                        :LoadingManager
+INFO: 143: IN: Loader Bill ready                                        :Loader

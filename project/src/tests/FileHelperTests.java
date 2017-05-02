@@ -1,6 +1,7 @@
 package tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
@@ -28,20 +29,20 @@ public class FileHelperTests {
   @Test
   public void logTest() {
 
-    FileHelper.logEvent("Test1");
-    FileHelper.logEvent("Test2");
-    FileHelper.logOrders(new String[] {"Order1", "Order2", "Order3", "Order4"});
+    FileHelper.logEvent("Test1", this);
+    FileHelper.logEvent("Test2", this);
+    FileHelper.logOrders(new String[] {"Order1", "Order2", "Order3", "Order4"}, this);
 
-    FileHelper.writeEventsToFile("test.csv");
+    FileHelper.writeLogToFile("test.csv");
     ArrayList<String> events = FileHelper.getLinesFromFile("test.csv");
-    assertEquals(events.get(0), "Test1");
-    assertEquals(events.get(1), "Test2");
+    assertTrue(events.get(0).contains("Test1"));
+    assertTrue(events.get(1).contains("Test2"));
 
     FileHelper.writeOrdersToFile("test.csv");
     ArrayList<String> orders = FileHelper.getLinesFromFile("test.csv");
-    assertEquals(orders.get(0), "Order1");
-    assertEquals(orders.get(1), "Order2");
-    assertEquals(orders.get(2), "Order3");
-    assertEquals(orders.get(3), "Order4");
+    assertTrue(orders.get(0).contains("Order1"));
+    assertTrue(orders.get(1).contains("Order2"));
+    assertTrue(orders.get(2).contains("Order3"));
+    assertTrue(orders.get(3).contains("Order4"));
   }
 }

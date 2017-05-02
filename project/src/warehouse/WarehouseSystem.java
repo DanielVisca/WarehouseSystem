@@ -69,29 +69,39 @@ public class WarehouseSystem {
   }
 
   /**
-   * Default Constructor for warehouse.
+   * Constructor for warehouse.
+   * 
+   * @param ordersFile the file containing the simulation orders
+   * @param dimensionsFile the file containing the dimensions of the warehouse floor
+   * @praam traversalFile the file containing the sku locations
+   * @param translationFile the file containing fascia to sku translations
+   * @param initialFile the file containing the warehouse initial stock 
    */
-  public WarehouseSystem() {
+  public WarehouseSystem(String ordersFile, String dimensionsFile, String traversalFile,
+      String translationFile, String initialFile) {
     // Initialize managers and simulation
-    FileHelper.logEvent("Initializing Warehouse");
-    jobManager = new JobManager(this);
-    inventoryManager =
-        new InventoryManager(this, "traversal_table.csv", "initial.csv", 2, 2, 3, 4, 30, 5);
+    FileHelper.logEvent("Initializing Warehouse", this);
+    // Store the orders for the simulation
+    input = FileHelper.getLinesFromFile(ordersFile);
+
+    // Initialize job manager with input file
+    jobManager = new JobManager(this, translationFile);
+
+    // Initialize inventory with input files
+    inventoryManager = new InventoryManager(this, dimensionsFile, traversalFile, initialFile);
+
+    // Create process managers
     pickingManager = new PickingManager(this);
     sequencingManager = new SequencingManager(this);
     loadingManager = new LoadingManager(this);
   }
 
-
-
   /**
    * Constructor with a given input File.
-   * 
-   * @param inputFile orders to allocate
    */
-  public WarehouseSystem(String inputFile) {
-    this();
-    this.input = FileHelper.getLinesFromFile(inputFile);
+  public WarehouseSystem() {
+    this("orders.txt", "inventory_dimensions.csv", "traversal_table.csv", "translation.csv",
+        "initial.csv");
   }
 
   /**
@@ -118,16 +128,21 @@ public class WarehouseSystem {
   public void simulate() {
     while (input.size() > 0) {
       if (simulationWarning) {
-        FileHelper
-            .logEvent("Warning. Simulation may be invalid. Account for worker error in orders.txt");
+        /*
+         * FileHelper.logEvent(
+         * "Warning. Simulation may be invalid. Account for worker error in orders file", this);
+         */
         simulationWarning = false;
+      }
+      String line = input.remove(0);
+
+      if (line.equals("") || line.contains("#")) {
+        continue;
       }
 
       FileHelper.tickLog();
 
-      String line = input.remove(0);
       receiveStatus(line);
-
     }
   }
 
@@ -168,7 +183,7 @@ public class WarehouseSystem {
    */
   public void sendToPicking(Job job) {
     pickingManager.queueJob(job);
-    FileHelper.logEvent("Job " + job + " ready for picking");
+    FileHelper.logEvent("Job " + job + " ready for picking", this);
   }
 
   /**
@@ -177,10 +192,9 @@ public class WarehouseSystem {
    * @param job to send
    */
   public void sendToMarshalling(Job job) {
-    FileHelper.logEvent("Job " + job + " ready for sequencing");
+    FileHelper.logEvent("Job " + job + " ready for sequencing", this);
     sequencingManager.queueJob(job);
   }
-
 
   /**
    * Send to loading.
@@ -188,7 +202,7 @@ public class WarehouseSystem {
    * @param job to send
    */
   public void sendToLoading(Job job) {
-    FileHelper.logEvent("Job " + job + " ready for loading");
+    FileHelper.logEvent("Job " + job + " ready for loading", this);
     loadingManager.queueJob(job);
   }
 
@@ -199,7 +213,7 @@ public class WarehouseSystem {
    */
   public void jobLoaded(Job job) {
     jobManager.removeJob(job);
-    FileHelper.logEvent("Job " + job + " loaded on a truck");
+    FileHelper.logEvent("Job " + job + " loaded on a truck", this);
   }
 
   /**
@@ -208,15 +222,14 @@ public class WarehouseSystem {
    * @param location to remove inventory from
    */
   public void removeFromInventory(Location location) {
-    FileHelper.logEvent("Item " + location.getSku() + " removed from inventory");
     try {
       inventoryManager.removeInventory(location);
-    } catch (NoSuchLocationException e) {
-      FileHelper.logEvent("The location " + location.toString() + " does not exist!");
-      e.printStackTrace();
+      FileHelper.logEvent("Item " + location.getSku() + " removed from inventory", this);
+    } catch (NoSuchLocationException exp) {
+      FileHelper.logEvent("The location " + location.toString() + " does not exist!", this);
+      // exp.printStackTrace();
     }
   }
-
 
   /**
    * Replenish inventory.
@@ -225,8 +238,9 @@ public class WarehouseSystem {
    */
   public void replenishInventory(Location location) {
     inventoryManager.replenish(location);
-    FileHelper.logEvent("Item " + location.getSku() + " replenished");
+    FileHelper.logEvent("Item " + location.getSku() + " replenished", this);
   }
+
 
   /**
    * End the day at the factory.
@@ -242,7 +256,28 @@ public class WarehouseSystem {
    * Main loop.
    */
   public static void main(String[] args) {
-    WarehouseSystem warehouseSystem = new WarehouseSystem("orders.txt");
+    String orders = null;
+    String dimensions = null;
+    String traversal = null;
+    String translation = null;
+    String initial = null;
+    if (args.length != 5) {
+      System.out.println("Error: missing input files, using default");
+      orders = "orders.txt";
+      dimensions = "inventory_dimensions.csv";
+      traversal = "traversal_table.csv";
+      translation = "translation.csv";
+      initial = "initial.csv";
+    } else {
+      orders = args[0];
+      dimensions = args[1];
+      traversal = args[2];
+      translation = args[3];
+      initial = args[4];
+    }
+
+    WarehouseSystem warehouseSystem =
+        new WarehouseSystem(orders, dimensions, traversal, translation, initial);
     warehouseSystem.simulate();
     warehouseSystem.endDay();
   }

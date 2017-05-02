@@ -12,17 +12,6 @@ public class PickingManager extends ProcessManager {
   }
 
   /**
-   * Job is complete, hand it off.
-   * 
-   * @param worker who completed job
-   */
-  public void jobComplete(Worker worker) {
-    super.jobComplete(worker);
-    Job job = worker.getCurrentJob();
-    system.sendToMarshalling(job);
-  }
-
-  /**
    * Create a new worker.
    * 
    * @param name of the worker
@@ -35,11 +24,33 @@ public class PickingManager extends ProcessManager {
   }
 
   /**
+   * Job is complete, hand it off.
+   * 
+   * @param worker who completed job
+   */
+  public void jobComplete(Worker worker) {
+    Job job = worker.getCurrentJob();
+    try {
+      super.jobComplete(worker);
+      getSystem().sendToMarshalling(job);
+    } catch (WorkerJobException exp) {
+      getSystem().raiseWarning();
+      FileHelper.logError(exp, this);
+      discardJob(worker);
+    }
+  }
+
+  /**
    * Item picked. Tell system to remove it from the inventory.
    * 
+   * @param worker that picked it
    * @param location item was picked from
    */
-  public void pickItem(Location location) {
-    system.removeFromInventory(location);
+  public void pickItem(Worker worker, Location location) {
+    WarehouseItem orderItem = new WarehouseItem(location.getSku());
+    Job job = worker.getCurrentJob();
+    job.addItem(orderItem);
+    getSystem().removeFromInventory(location);
+    worker.setInstruction(job.nextInstruction());
   }
 }

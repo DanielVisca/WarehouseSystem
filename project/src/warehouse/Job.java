@@ -1,5 +1,6 @@
 package warehouse;
 
+import java.lang.String;
 import java.util.ArrayList;
 
 public class Job {
@@ -8,7 +9,6 @@ public class Job {
   private String id;
   // Worker assigned to this job
   private Worker worker = null;
-
 
   // Below are potential properties of the job
   // Picked items
@@ -23,7 +23,7 @@ public class Job {
   private String[] orders;
 
   // List of the actual skus
-  private int[] skus = null;
+  private String[] skus = null;
 
   // The organized list of skus to be picked and the current index of picking
   private int pickingIndex = 0;
@@ -32,16 +32,22 @@ public class Job {
   /**
    * Default constructor for job.
    * 
+   * @param system this job functions within, to optimize traversal
    * @param skus of the job
    * @param orders describing the skus
    */
-  public Job(int[] skus, String[] orders) {
+  public Job(WarehouseSystem system, String[] skus, String[] orders) {
     this.skus = skus;
     this.orders = orders;
-    pickingOrder = WarehousePicking.optimize(skus);
+    pickingOrder = system.getInventoryManager().optimize(skus);
+    // For some reason string.join would not compile at command line
+    // id = String.join("-", skus);
     id = "";
-    for (int i : this.skus) {
-      id = id + String.format("%02d", i);
+    for (int i = 0; i < skus.length; i++) {
+      if (i != 0) {
+        id += "-";
+      }
+      id += skus[i];
     }
   }
 
@@ -51,31 +57,31 @@ public class Job {
    * @param location of the level to be replenished
    */
   public Job(Location location) {
-    this.skus = new int[] {location.getSku()};
+    this.skus = new String[] {location.getSku()};
     this.location = location;
-    this.id = String.format("%02d", this.skus[0]);
+    this.id = this.skus[0];
   }
 
   /**
    * Next instruction request. This looks at the job, the worker, and sends the appropriate message
    * to their device.
    */
-  public void nextInstruction() {
+  public String nextInstruction() {
     if (worker instanceof Picker) {
       Location nextPick = null;
       if (pickingIndex < pickingOrder.length) {
         nextPick = pickingOrder[pickingIndex];
-        worker.setInstruction("pick " + nextPick.getSku() + " from " + nextPick);
+        return "pick " + nextPick.getSku() + " from " + nextPick;
       } else {
-        worker.setInstruction("go to marshalling");
+        return "go to marshalling";
       }
     } else if (worker instanceof Sequencer) {
-      worker.setInstruction("sequence " + this);
+      return "sequence " + this;
     } else if (worker instanceof Loader) {
-      worker.setInstruction("load " + this);
-    } else if (worker instanceof Replenisher) {
-      worker.setInstruction("replenish " + getId() + " at " + location.toString());
-    }
+      return "load " + this;
+    } else { // if (worker instanceof Replenisher) {
+      return "replenish " + getId() + " at " + location.toString();
+    } 
   }
 
   /**
@@ -87,10 +93,7 @@ public class Job {
     Location nextPick = null;
     if (pickingIndex < pickingOrder.length) {
       nextPick = pickingOrder[pickingIndex];
-    }
-    // If we're done picking return null
-    if (nextPick == null) {
-      FileHelper.logEvent("Missing translation data for job " + this);
+    } else {
       return null;
     }
     setLocation(nextPick);
@@ -99,11 +102,18 @@ public class Job {
   }
 
   /**
+   * Pick failed, roll back index.
+   */
+  public void pickFailed() {
+    pickingIndex--;
+  }
+
+  /**
    * Get skus.
    * 
-   * @return int[]
+   * @return String[]
    */
-  public int[] getSkus() {
+  public String[] getSkus() {
     return skus;
   }
 
@@ -150,11 +160,20 @@ public class Job {
    * @param numPallets to prepare
    */
   public void preparePallets(int numPallets) {
+    // If pallets exists, remove the items from them
+    if (pallets != null) {
+      for (int i = 0; i < pallets.length; i++) {
+        for (WarehouseItem item : pallets[i].getItems()) {
+          addItem(item);
+        }
+      }
+    }
     pallets = new Pallet[numPallets];
     for (int i = 0; i < numPallets; i++) {
       pallets[i] = new Pallet();
     }
   }
+
 
   /**
    * Set the pallets for this job.
@@ -203,48 +222,72 @@ public class Job {
 
   /**
    * Verify the current job.
-   * 
-   * @return boolean whether the job is filled
    */
-  public boolean verify() {
-    ArrayList<Integer> tempSkus = new ArrayList<Integer>();
-    for (int i = 0; i < skus.length; i++) {
-      tempSkus.add(skus[i]);
-    }
-
-    // Check items
-    for (WarehouseItem item : items) {
-      Integer sku = Integer.valueOf(item.getsku());
-      if (tempSkus.contains(sku)) {
-        tempSkus.remove(sku);
-      } else {
-        return false;
+  public void verify() throws WorkerJobException {
+    // If there are no pallets, its a picking validation
+    if (pallets == null && worker instanceof Picker) {
+      if (getItems().size() < getSkus().length) {
+        throw new SequencerJobException("Wrong number of items picked");
       }
-    }
 
-    if (pallets != null) {
-      int numPallets = pallets.length;
-      // Check pallets
+      // Verify all skus accounted for
+      ArrayList<String> tempSkus = new ArrayList<String>();
+      for (int i = 0; i < skus.length; i++) {
+        tempSkus.add(skus[i]);
+      }
+
+      // Check items
+      for (WarehouseItem item : items) {
+        String sku = item.getsku();
+        if (tempSkus.contains(sku)) {
+          tempSkus.remove(sku);
+        } else {
+          throw new SequencerJobException("Invalid item(s) in picked job.");
+        }
+      }
+      // Otherwise, its a seqeuncing validation
+    } else if (worker instanceof Sequencer || worker instanceof Loader) {
+      // Verify the correct amount of items on pallets
+      int totalItems = 0;
       for (int i = 0; i < pallets.length; i++) {
-        int order = (int) Math.floor(i / 2);
-        if (pallets[i % numPallets].getItems().get(order).getsku() != skus[i]) {
-          return false;
+        totalItems += pallets[i].getItems().size();
+      }
+
+      if (totalItems != skus.length) {
+        throw new SequencerJobException("Wrong number of items on pallets");
+      }
+
+      // Verify all skus accounted for
+      ArrayList<String> tempSkus = new ArrayList<String>();
+      for (int i = 0; i < skus.length; i++) {
+        tempSkus.add(skus[i]);
+      }
+      for (int i = 0; i < pallets.length; i++) {
+        for (WarehouseItem item : pallets[i].getItems()) {
+          String sku = item.getsku();
+          if (tempSkus.contains(sku)) {
+            tempSkus.remove(sku);
+          } else {
+            // Wrong item on pallet!
+            throw new SequencerJobException("Invalid item(s) in picked job.");
+          }
         }
       }
     }
-    return true;
   }
 
   /**
    * Discard contents of the job.
    */
-  public void discardContents() {
+  public void resetJob() {
     pallets = null;
 
     if (items != null) {
       items.clear();
       pickingIndex = 0;
     }
+
+    setWorker(null);
   }
 
   /**
@@ -281,13 +324,6 @@ public class Job {
    */
   public Worker getWorker() {
     return worker;
-  }
-
-  /**
-   * Job complete.
-   */
-  public void complete() {
-    setWorker(null);
   }
 
   /**

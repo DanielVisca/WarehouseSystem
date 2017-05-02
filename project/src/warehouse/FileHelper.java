@@ -1,4 +1,4 @@
-package warehouse;
+  package warehouse;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,12 +8,22 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class FileHelper {
 
+  private static boolean fancyLogging = true;
   private static boolean silentLogging = false;
-  private static ArrayList<String> events = new ArrayList<String>();
-  private static ArrayList<String> instructions = new ArrayList<String>();
+  private static ArrayList<String> log = new ArrayList<String>();
   private static ArrayList<String> orders = new ArrayList<String>();
+
+  // Logging information
+  private static final Logger logger = Logger.getLogger(WarehouseSystem.class.getName());
+  private static final Handler consoleHandler = new ConsoleHandler();
 
   private static int prevLogTicker = -1;
   private static int logTicker = 0;
@@ -26,6 +36,37 @@ public class FileHelper {
   }
 
   /**
+   * Initialize the logger.
+   */
+  private static void initializeLogger() {
+    // Initialize logger
+    if (logger.getHandlers().length == 0) {
+      logger.setLevel(Level.ALL);
+
+      // Set console handler
+      logger.addHandler(consoleHandler);
+      logger.setUseParentHandlers(false);
+      consoleHandler.setLevel(Level.ALL);
+      // java.util.logging.SimpleFormatter.format = "%4$s: %5$s%n";
+      LogFormatter consoleFormatter = new LogFormatter();
+      consoleHandler.setFormatter(consoleFormatter);
+
+      // Set file handler
+      FileHandler fileHandler;
+      try {
+        fileHandler = new FileHandler("./log.txt");
+        logger.addHandler(fileHandler);
+        // SimpleFormatter fileFormatter = new SimpleFormatter();
+        fileHandler.setFormatter(consoleFormatter);
+      } catch (SecurityException exp) {
+        exp.printStackTrace();
+      } catch (IOException exp) {
+        exp.printStackTrace();
+      }
+    }
+  }
+
+  /**
    * Get log prefix according to the tick. If its the first for the tick, give a number, otherwise
    * whitespace.
    */
@@ -33,10 +74,10 @@ public class FileHelper {
     if (logTicker != prevLogTicker) {
       prevLogTicker = logTicker;
 
-      return String.format("%2s", logTicker) + ": ";
+      return String.format("%3s", logTicker) + ": ";
     } else {
       // Return 4 spaces to align
-      return new String(new char[4]).replace("\0", " ");
+      return new String(new char[5]).replace("\0", " ");
     }
   }
 
@@ -126,13 +167,51 @@ public class FileHelper {
    * Log an event in the warehouse.
    * 
    * @param event event to log
+   * @param reportingClass sending the event
    */
-  public static void logEvent(String event) {
+  // public static void logEvent(String event) { FileHelper.logEvent(event, null); };
+  public static void logEvent(String event, Object reportingClass) {
+    initializeLogger();
     String logPrefix = getLogPrefix();
-    if (!silentLogging) {
-      System.out.println(logPrefix + event);
+    String logPostfix = "";
+    if (reportingClass != null) {
+      logPostfix = " :" + reportingClass.getClass().getSimpleName();
     }
-    events.add(event);
+    String eventMessage = String.format("%1$-65s", logPrefix + event) + logPostfix;
+    if (!silentLogging) {
+      if (fancyLogging) {
+        logger.log(Level.INFO, eventMessage);
+      } else {
+        System.out.println(eventMessage);
+      }
+    }
+    log.add(eventMessage);
+  }
+
+  /**
+   * Log an error in the warehouse.
+   * 
+   * @param exp that accompanies error
+   * @param reportingClass sending the error
+   */
+  // public static void logError(Exception exp) { FileHelper.logError(exp, null); }
+  public static void logError(Exception exp, Object reportingClass) {
+    initializeLogger();
+    String logPrefix = getLogPrefix();
+    String logPostfix = "";
+    if (reportingClass != null) {
+      logPostfix = " :" + reportingClass.getClass().getSimpleName();
+    }
+    String errorMessage =
+        String.format("%1$-65s", logPrefix + "Error: " + exp.getMessage()) + logPostfix;
+    if (!silentLogging) {
+      if (fancyLogging) {
+        logger.log(Level.SEVERE, errorMessage, exp);
+      } else {
+        System.out.println(errorMessage);
+      }
+    }
+    log.add(errorMessage);
   }
 
   /**
@@ -140,36 +219,37 @@ public class FileHelper {
    * 
    * @param orders to log
    */
-  public static void logOrders(String[] orders) {
+  // public static void logOrders(String[] orders) { FileHelper.logOrders(orders, null); }
+  public static void logOrders(String[] orders, Object reportingClass) {
+    initializeLogger();
     String logPrefix = getLogPrefix();
+    String logPostfix = "";
+    if (reportingClass != null) {
+      logPostfix = " :" + reportingClass.getClass().getSimpleName();
+    }
     for (int i = 0; i < orders.length; i++) {
+      String orderMessage =
+          String.format("%1$-65s", logPrefix + orders[i] + " is on a truck") + logPostfix;
       if (!silentLogging) {
-        System.out.println(logPrefix + orders[i] + " is on a truck");
+        if (fancyLogging) {
+          logger.log(Level.INFO, orderMessage);
+        } else {
+          System.out.println(orderMessage);
+        }
       }
       FileHelper.orders.add(orders[i]);
     }
   }
 
   /**
-   * Log instructions.
-   * 
-   * @param instruction to log
-   */
-  public static void logInstruction(String instruction) {
-    String logPrefix = getLogPrefix();
-    if (!silentLogging) {
-      System.out.println(logPrefix + instruction);
-    }
-    instructions.add(instruction);
-  }
-
-  /**
-   * Write events to file.
+   * Write log events to file.
    * 
    * @param file name of file
    */
-  public static void writeEventsToFile(String file) {
-    writeLinesToFile(file, events.toArray(new String[events.size()]));
+  public static void writeLogToFile(String file) {
+    if (log.size() > 0) {
+      writeLinesToFile(file, log.toArray(new String[log.size()]));
+    }
   }
 
   /**
@@ -179,14 +259,5 @@ public class FileHelper {
    */
   public static void writeOrdersToFile(String file) {
     writeLinesToFile(file, orders.toArray(new String[orders.size()]));
-  }
-
-  /**
-   * Write instructions to file.
-   * 
-   * @param file name of file
-   */
-  public static void writeInstructionsToFile(String file) {
-    writeLinesToFile(file, instructions.toArray(new String[instructions.size()]));
   }
 }

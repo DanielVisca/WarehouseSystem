@@ -1,31 +1,24 @@
 Daniel
-- Implemented WarehouseSystem 
-- Assisted with implementation of WarehouseItem
-- Implemented Picker class
-- Implemented Location class
-- Assited in writing exceptions to catch errors from wrong input files
-- Assited with Sequencer class
-- Assited in refactoring to account for Location class 
+-Implemented Sequencer Rescan
+-Assisted with Sequencer Tests
+-Converted Sequencer from simulation to scanning each item on pallet
 
 Jamie
-- Created CRC and maintained UML with information from initial meetings
-- Implemented managers including JobManager, ProcessManager, PickingManager, SequencingManager, LoadingManager
-- Implemented Job class and Worker abstract class
-- Implemented Loader and part of Picker subclassses
-- Assisted implementing WarehouseSystem
-- Created FileHelper class to read/write files, and log simulation information
-- Wrote tests for all of the above in ManagerTests and FileHelperTests
+- Improved relationship between managers and workers, better representing model/controller relationship
+- Added exception handling in managers and workers for when they make mistakes
+  - This includes pickers being corrected when wrongly picking
+- Wrote new tests for managers, workers, and job to cover new functionality from phase 1
+- Improved logging from part 1 to take advantage of built in logger, log errors
+- Added simulation order files and changed them to conform to new event reporting
 
 Maggie
-- Contributed to CRC design and completed final UML with changes from implementation and refactoring processes
-- Implemented warehouse layout, including Level, Rack, Zone
-- Implemented inventory classes and methods, including InventoryManager and Replenisher
-- Created InventoryLocations class to map SKUs and their locations
-- Proofread for Checkstyle errors
-- Refactored warehouse to flatten classes into one Location class
-- Wrote exceptions for file input and location lookups
-- Wrote checks to ensure traversal_table and initial are correct upon input into program
+- Added Zone object for zone name flexibility
+- Modified Location and Zone to implement algorithm calculaitng location's index within Zone ArrayList
+- Completed new UML with added associations
+- Created presentation/walkthrough slides
+- Improved exceptions checking input files for inventory setup
 
 Queenie
-- Wrote tests except ManagerTests and FileHelperTests
-- Fixed Checkstyle errors
+- Assisted in rescan event
+- Updated unit tests
+- Finished with checkstyle

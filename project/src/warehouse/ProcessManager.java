@@ -7,14 +7,14 @@ import java.util.Map.Entry;
 public abstract class ProcessManager {
 
   // Map of workers for easy access by name
-  protected LinkedHashMap<String, Worker> workers = new LinkedHashMap<String, Worker>();
+  private LinkedHashMap<String, Worker> workers = new LinkedHashMap<String, Worker>();
   // Queue of jobs to do
-  protected ArrayList<Job> jobsToDo = new ArrayList<Job>();
+  private ArrayList<Job> jobsToDo = new ArrayList<Job>();
   // Map of jobs in progress
-  protected ArrayList<Job> jobsInProgress = new ArrayList<Job>();
+  private ArrayList<Job> jobsInProgress = new ArrayList<Job>();
 
   // Master system
-  protected WarehouseSystem system;
+  private WarehouseSystem system;
 
   /**
    * Default constructor for ProcessManager.
@@ -33,25 +33,58 @@ public abstract class ProcessManager {
    */
   public void setStatus(String name, String status) {
     Worker worker = getWorker(name);
-    worker.setStatus(status);
 
-    // If they're ready, give them a job
-    if (status.equals("ready")) {
-      // If there are jobs to do, give them one, otherwise they can wait
-      if (jobsToDo.size() > 0) {
-        Job job = jobsToDo.remove(0);
-        assignJob(worker, job);
-      }
-    } else {
-      // If the workers current status is ready/does not have a job then something wrong
-      if (worker.getCurrentJob() == null) {
-        FileHelper.logEvent("Error: " + name + " has no job to " + status);
+    try {
+      worker.setStatus(status);
+
+      // If they're ready, give them a job
+      if (status.equals("ready")) {
+        // If there are jobs to do, give them one, otherwise they can wait
+        if (jobsToDo.size() > 0) {
+          assignJob(worker, getNextJob());
+        }
       } else {
         // Otherwise, this means the worker has performed a task.
         // Need to let the worker know they've done the task, and give them the next one
         worker.nextTask();
       }
+    } catch (WorkerJobException exp) {
+      FileHelper.logError(exp, this);
+      if (exp instanceof PickerJobException) {
+        // Picker screwed up, instruct them to redo the pick
+        Picker picker = (Picker) worker;
+        if (picker.getCurrentJob() != null) {
+          picker.setInstruction(picker.getCurrentJob().nextInstruction());
+        } else {
+          picker.setInstruction("Put it back. You have no job, and therefor, no purpose");
+        }
+      } else if (exp instanceof SequencerJobException) {
+        // Picker or Sequencer screwed up or the job is invalid, throw it out
+        worker.setInstruction("discard job");
+        discardJob(worker);
+      } else if (exp instanceof ReplenisherJobException) {
+        // Quick reset the job back to the replenisher
+        Replenisher replenisher = (Replenisher) worker;
+        replenisher.setInstruction(replenisher.getCurrentJob().nextInstruction());
+      }
+      system.raiseWarning();
     }
+  }
+
+  /**
+   * Get the next job that should be worked on.
+   * 
+   * @return Job
+   * @throws WorkerJobException for worker error
+   */
+  public Job getNextJob() throws WorkerJobException {
+    Job job = jobsToDo.remove(0);
+
+    if (job == null) {
+      throw new WorkerJobException("No job in queue");
+    }
+
+    return job;
   }
 
   /**
@@ -60,12 +93,9 @@ public abstract class ProcessManager {
    * @param worker to perform job
    * @param job to do
    */
-  private void assignJob(Worker worker, Job job) {
+  private void assignJob(Worker worker, Job job) throws WorkerJobException {
+    worker.startJob(job);
     jobsInProgress.add(job);
-    if (!worker.startJob(job)) {
-      FileHelper.logEvent(
-          "Error: " + worker.getName() + " already has job " + worker.getCurrentJob().getId());
-    }
   }
 
   /**
@@ -93,44 +123,51 @@ public abstract class ProcessManager {
     for (Entry<String, Worker> entry : workers.entrySet()) {
       Worker worker = entry.getValue();
       if (worker.getStatus().equals("ready")) {
-        assignJob(worker, job);
-        return;
+        try {
+          assignJob(worker, job);
+          return;
+        } catch (WorkerJobException exp) {
+          system.raiseWarning();
+          FileHelper.logError(exp, this);
+        }
       }
     }
-
     jobsToDo.add(job);
   }
 
   /**
    * Job is complete, hand it off.
-   * 
+   *
    * @param worker who completed job
+   * @throws WorkerJobException for worker error
    */
-  public void jobComplete(Worker worker) {
+  public void jobComplete(Worker worker) throws WorkerJobException {
     Job job = worker.getCurrentJob();
-    job.complete();
-    jobsInProgress.remove(job);
+    try {
+      job.verify();
+      jobsInProgress.remove(job);
+      job.setWorker(null);
+      worker.setCurrentJob(null);
+      worker.setInstruction("");
+    } catch (WorkerJobException exp) {
+      // Error in the job, notify sub manager so they can deal with it
+      throw new WorkerJobException(exp.getMessage());
+    }
   }
 
   /**
    * Discard job.
    * 
-   * @param worker who screwed up
-   * @param job to discard
+   * @param worker whos job should be discarded
    */
-  public void discardJob(Worker worker, Job job) {
-    FileHelper
-        .logEvent("Job " + job.getId() + " items discarded. Sending to beginning of Job queue.");
+  public void discardJob(Worker worker) {
+    Job job = worker.getCurrentJob();
+    job.resetJob();
+    worker.setCurrentJob(null);
+    FileHelper.logEvent(
+        "Job " + job.getId() + " items discarded. Sending to beginning of Job queue.", this);
     jobsInProgress.remove(job);
     system.sendToPicking(job);
-    system.raiseWarning();
-  }
-
-  /**
-   * Worker error. Raise a simulation warning to the system.
-   */
-  public void workerError() {
-    system.raiseWarning();
   }
 
   /**
@@ -166,5 +203,14 @@ public abstract class ProcessManager {
    */
   public ArrayList<Job> getJobsInProgress() {
     return jobsInProgress;
+  }
+
+  /**
+   * Get the master system.
+   * 
+   * @return WarehouseSystem
+   */
+  public WarehouseSystem getSystem() {
+    return system;
   }
 }

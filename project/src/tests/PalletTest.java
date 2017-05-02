@@ -15,9 +15,9 @@ public class PalletTest {
   @Test
   public void testAddItem() {
     Pallet pallet = new Pallet();
-    WarehouseItem item1 = new WarehouseItem(12);
-    WarehouseItem item2 = new WarehouseItem(34);
-    WarehouseItem item3 = new WarehouseItem(7172);
+    WarehouseItem item1 = new WarehouseItem("d12");
+    WarehouseItem item2 = new WarehouseItem("g34");
+    WarehouseItem item3 = new WarehouseItem("7172");
     pallet.addItem(item1);
     pallet.addItem(item2);
     pallet.addItem(item3);
@@ -36,9 +36,9 @@ public class PalletTest {
   @Test
   public void testGetItems() {
     Pallet pallet = new Pallet();
-    WarehouseItem item1 = new WarehouseItem(12);
-    WarehouseItem item2 = new WarehouseItem(34);
-    WarehouseItem item3 = new WarehouseItem(7172);
+    WarehouseItem item1 = new WarehouseItem("d12");
+    WarehouseItem item2 = new WarehouseItem("g34");
+    WarehouseItem item3 = new WarehouseItem("7172");
     pallet.addItem(item1);
     pallet.addItem(item2);
     pallet.addItem(item3);

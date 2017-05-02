@@ -1,7 +1,7 @@
 package warehouse;
 
 public class Location {
-  // Unique identifier for this location object
+  // Unique identifier for this location object based on its attributes
   private String id;
 
   // Attributes indicating this location's location in physical warehouse
@@ -10,9 +10,9 @@ public class Location {
   private int rack;
   private int level;
   // The SKU of items stored here
-  private int sku;
+  private String sku;
   // The inventory level (number of items) here
-  private int inventory;
+  private int inventory = 0;
   // The maximum capacity here
   private int max = 0;
   // The minimum inventory, at which a replenish request is made
@@ -27,14 +27,13 @@ public class Location {
    * @param level The level of this location.
    * @param sku The SKU of items at this location.
    */
-  public Location(String zone, int aisle, int rack, int level, int sku) {
+  public Location(String zone, int aisle, int rack, int level, String sku) {
     this.zone = zone;
     this.aisle = aisle;
     this.rack = rack;
     this.level = level;
     this.sku = sku;
-
-    createId();
+    setId();
   }
 
   /**
@@ -55,8 +54,7 @@ public class Location {
     // Capacities
     this.max = max;
     this.min = min;
-
-    createId();
+    setId();
   }
 
   /**
@@ -70,7 +68,7 @@ public class Location {
    * @param max The capacity of this location
    * @param min The minimum number of items before this location needs replenishing.
    */
-  public Location(String zone, int aisle, int rack, int level, int sku, int max, int min) {
+  public Location(String zone, int aisle, int rack, int level, String sku, int max, int min) {
     this.zone = zone;
     this.aisle = aisle;
     this.rack = rack;
@@ -79,8 +77,7 @@ public class Location {
     // Capacities
     this.max = max;
     this.min = min;
-
-    createId();
+    setId();
   }
 
   /**
@@ -105,17 +102,24 @@ public class Location {
     this.aisle = Integer.valueOf(split[1]);
     this.rack = Integer.valueOf(split[2]);
     this.level = Integer.valueOf(split[3]);
-    this.sku = Integer.valueOf(split[4]);
+    this.sku = split[4];
     this.max = max;
     this.min = min;
-    createId();
+    setId();
   }
 
   /**
-   * Create id of this location based on attributes.
+   * Set id of this location based on its attributes.
    */
-  private void createId() {
+  private void setId() {
     this.id = zone + " " + aisle + " " + rack + " " + level;
+  }
+
+  /**
+   * Get id of this location.
+   */
+  public String getId() {
+    return this.id;
   }
 
   /**
@@ -159,7 +163,7 @@ public class Location {
    * 
    * @return sku at this location
    */
-  public int getSku() {
+  public String getSku() {
     return this.sku;
   }
 
@@ -168,7 +172,7 @@ public class Location {
    * 
    * @param sku The SKU of items here
    */
-  public void setSku(int sku) {
+  public void setSku(String sku) {
     this.sku = sku;
   }
 
@@ -189,9 +193,9 @@ public class Location {
    * @throws StockExceedsCapacityException if amount to stock location exceeds its capacity
    */
   public void setInventory(int amount) throws StockExceedsCapacityException {
-    if (amount > this.max) {
-      throw new StockExceedsCapacityException("Attempted stock " + amount 
-          + " exceeds maximum capacity of " + this.max);
+    if (amount > this.max || amount < 0) {
+      throw new StockExceedsCapacityException(
+          "Attempted stock " + amount + " exceeds maximum capacity of " + this.max);
     }
     this.inventory = amount;
   }
@@ -253,36 +257,32 @@ public class Location {
   }
 
   /*
-   * (non-Javadoc)
+   * Checks if this location is the same as another's, based on their id, which consists of the
+   * location's coordinates (zone, aisle, rack, level, sku).
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public boolean equals(Object obj) {
+    // Check if same obj
     if (this == obj) {
       return true;
     }
+    // Check if other obj exists
     if (obj == null) {
       return false;
     }
+    // Check same class
     if (getClass() != obj.getClass()) {
       return false;
     }
+    // Sameness based on id
     Location other = (Location) obj;
-    if (aisle != other.aisle) {
+    if (!getId().equals(other.getId())) {
       return false;
     }
-    if (level != other.level) {
-      return false;
-    }
-    if (rack != other.rack) {
-      return false;
-    }
-    if (zone == null) {
-      if (other.zone != null) {
-        return false;
-      }
-    } else if (!zone.equals(other.zone)) {
+
+    if (!getSku().equals(other.getSku())) {
       return false;
     }
     return true;

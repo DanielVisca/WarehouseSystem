@@ -15,8 +15,19 @@ public class Replenisher extends Worker {
   /**
    * Perform the next task in the job.
    */
-  public void nextTask() {
-    logTask("replenish " + currentJob.getId());
-    jobComplete();
+  public void nextTask() throws WorkerJobException {
+    if (getCurrentJob() == null) {
+      throw new WorkerJobException("no job to replenish.");
+    }
+
+    String[] splitStatus = getStatus().split(" ");
+    String reportedSku = splitStatus[1];
+    String expectedSku = getCurrentJob().getSkus()[0];
+    // Check that we're replenishing the right sku
+    if (splitStatus[0].equals("replenish") && !reportedSku.equals(expectedSku)) {
+      throw new ReplenisherJobException("wrong sku to replenish");
+    }
+
+    getManager().jobComplete(this);
   }
 }

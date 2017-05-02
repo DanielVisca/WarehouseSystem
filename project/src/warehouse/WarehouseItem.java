@@ -5,7 +5,7 @@ package warehouse;
  *
  */
 public class WarehouseItem {
-  private int sku;
+  private String sku;
   private int size = 1;
 
   /**
@@ -18,7 +18,7 @@ public class WarehouseItem {
    * 
    * @param sku The sku number of this item.
    */
-  public WarehouseItem(int sku) {
+  public WarehouseItem(String sku) {
     this.sku = sku;
   }
 
@@ -27,8 +27,17 @@ public class WarehouseItem {
    * 
    * @return the sku
    */
-  public int getsku() {
+  public String getsku() {
     return sku;
+  }
+  
+  /**
+   * Set the sku number of this item.
+   * 
+   * @param sku of the item
+   */
+  public void setSku(String sku) {
+    this.sku = sku;
   }
 
   @Override

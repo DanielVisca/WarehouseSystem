@@ -29,6 +29,26 @@ public class LoadingManager extends ProcessManager {
   }
 
   /**
+   * Get the next job that should be worked on. For a loader thats the one in the order they came
+   * in.
+   * 
+   * @return Job
+   * @throws WorkerJobException for worker error
+   */
+  public Job getNextJob() throws WorkerJobException {
+    // Get the job manager
+    JobManager jobManager = getSystem().getJobManager();
+
+    Job nextJob = jobManager.getJobs().get(0);
+    if (getJobsToDo().contains(nextJob)) {
+      getJobsToDo().remove(nextJob);
+      return nextJob;
+    } else {
+      throw new LoaderJobException("Highest priority job has not reached loading");
+    }
+  }
+
+  /**
    * Get truck.
    * 
    * @return Truck
@@ -40,6 +60,15 @@ public class LoadingManager extends ProcessManager {
     }
     return currentTruck;
   }
+  
+  /**
+   * Get current truck.
+   * 
+   * @return Truck
+   */
+  public Truck getCurrentTruck() {
+    return currentTruck;
+  }
 
   /**
    * Job is complete, hand it off.
@@ -47,15 +76,21 @@ public class LoadingManager extends ProcessManager {
    * @param worker who completed job
    */
   public void jobComplete(Worker worker) {
-    super.jobComplete(worker);
     Job job = worker.getCurrentJob();
-    trucks.remove(currentTruck);
-    system.jobLoaded(job);
+    try {
+      super.jobComplete(worker);
+      trucks.remove(currentTruck);
+      getSystem().jobLoaded(job);
 
-    FileHelper.logOrders(job.getOrders());
-    if (currentTruck.full()) {
-      currentTruck = null;
-      FileHelper.logEvent("Shipment sent");
+      FileHelper.logOrders(job.getOrders(), this);
+      if (currentTruck.full()) {
+        currentTruck = null;
+        FileHelper.logEvent("Shipment sent", this);
+      }
+    } catch (WorkerJobException exp) {
+      getSystem().raiseWarning();
+      FileHelper.logError(exp, this);
+      discardJob(worker);
     }
   }
 }

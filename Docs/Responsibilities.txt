@@ -2,6 +2,10 @@ All
   All variables should be private with getters/setters
     Double check the getters and setters are actually needed
 
+  Verify translation table front/back sku
+
+  Get list of unfinished jobs at end of day
+
 Daniel
   Verify traversal table
 
@@ -14,15 +18,17 @@ Daniel
     Sequencer has orders to scan each sku
 
 Jamie
-  SKU to string (job)
-  Finalize logging
+  *SKU to string (job)
+  *Finalize logging (Ask about how its been consolidated..)
     ConsoleHandler
     FileHandler
 
-  Picker can catchs a false scan, tell them to pick right one again
+  *Exception check in set status for existing job
+  *Picker can catchs a false scan, tell them to pick right one again
     Exceptions
 
   Look for design patterns
+  *Check loader order vs job manager job queue
 
 Maggie
   UML

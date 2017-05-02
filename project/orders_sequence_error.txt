@@ -1,0 +1,37 @@
+Order SES Blue
+Order SE Red
+Order SE Black
+Order SE Black
+Picker Alice ready
+Picker Alice pick 37
+Picker Alice pick 38
+Picker Alice pick 19
+Picker Alice pick 20
+Picker Alice pick 43
+Picker Alice pick 44
+Picker Alice pick 43
+Picker Alice pick 44
+Picker Alice to marshalling
+Sequencer Sue ready
+Sequencer Sue sequences 37
+Sequencer Sue sequences 44
+Picker Alice ready
+Picker Alice pick 37
+Picker Alice pick 38
+Picker Alice pick 19
+Picker Alice pick 20
+Picker Alice pick 43
+Picker Alice pick 44
+Picker Alice pick 43
+Picker Alice pick 44
+Picker Alice to marshalling
+Sequencer Sue ready
+Sequencer Sue sequences 37
+Sequencer Sue sequences 19
+Sequencer Sue sequences 43
+Sequencer Sue sequences 43
+Sequencer Sue sequences 38
+Sequencer Sue sequences 20
+Sequencer Sue sequences 44
+Sequencer Sue sequences 44 
+Sequencer Sue to loading

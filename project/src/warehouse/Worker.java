@@ -7,13 +7,14 @@ public abstract class Worker {
   // Role of the worker
   private String role;
   // Current job the worker is performing
-  protected Job currentJob;
+  private Job currentJob;
   // The last status reported by the worker
   private String lastStatus;
   // Next instruction
-  protected String instruction;
+  private String instruction;
   // Manager of software
-  protected ProcessManager manager;
+  private ProcessManager manager;
+  // Keep track of
 
   /**
    * Default constructor for worker.
@@ -55,6 +56,16 @@ public abstract class Worker {
   }
 
   /**
+   * Set current job.
+   * 
+   * @param job to set
+   */
+  public void setCurrentJob(Job job) {
+    this.currentJob = job;
+  }
+
+
+  /**
    * Get lastStatus.
    * 
    * @return String
@@ -68,15 +79,23 @@ public abstract class Worker {
    * 
    * @param lastStatus to set
    */
-  public void setStatus(String lastStatus) {
+  public void setStatus(String lastStatus) throws WorkerJobException {
     this.lastStatus = lastStatus;
+    logStatus();
     if (lastStatus.equals("ready")) {
       if (currentJob != null) {
-        logError("has not completed last job.");
-      } else {
-        logStatus();
+        throw new WorkerJobException("Last job lot completed");
       }
     }
+  }
+
+  /**
+   * Get the last instruction sent to this worker.
+   * 
+   * @return String
+   */
+  public String getLastInstruction() {
+    return instruction;
   }
 
   /**
@@ -110,27 +129,29 @@ public abstract class Worker {
   /**
    * Parse the job.
    * 
-   * @param job job to parse
-   * @return boolean
+   * @param job to parse
+   * @throws WorkerJobException for worker error
    */
-  public boolean startJob(Job job) {
-    if (currentJob == null) {
+  public void startJob(Job job) throws WorkerJobException {
+    if (currentJob == null && job != null) {
       currentJob = job;
       currentJob.setWorker(this);
-      setStatus("starting job");
-      logTask("has begun job " + job);
-      currentJob.nextInstruction();
-      return true;
-    } else {
-      return false;
+      logTask("starting job " + job);
+      setInstruction(currentJob.nextInstruction());
+    } else if (currentJob != null) {
+      throw new WorkerJobException("Worker " + name + " already has a job.");
+    } else if (job == null) {
+      throw new WorkerJobException("This job does not exist");
     }
   }
 
   /**
    * Perform the next task in the job. This only really applies to pickers as they are the only ones
    * with more than one task per job
+   * 
+   * @throws WorkerJobException for worker error
    */
-  public abstract void nextTask();
+  public abstract void nextTask() throws WorkerJobException;
 
   /**
    * Log a completed task of this worker. This is for more detailed logging than logStatus.
@@ -138,58 +159,23 @@ public abstract class Worker {
    * @param task to log
    */
   protected void logTask(String task) {
-    FileHelper.logEvent(role + " " + name + " " + task);
+    String taskString = role + " " + name + " " + task;
+    FileHelper.logEvent(taskString, this);
   }
 
   /**
    * Log current status. Quick way to record actions.
    */
   protected void logStatus() {
-    FileHelper.logEvent(role + " " + name + " " + getStatus());
+    String statusString = "IN: " + role + " " + name + " " + getStatus();
+    FileHelper.logEvent(statusString, this);
   }
 
   /**
    * Log instruction given to this worker.
    */
   protected void logInstruction() {
-    FileHelper.logInstruction(role + " " + name + " instructed to " + instruction);
-  }
-
-  /**
-   * Log an error.
-   * 
-   * @param error to log
-   */
-  protected void logError(String error) {
-    FileHelper.logEvent("Error: " + role + " " + name + " " + error);
-    manager.workerError();
-  }
-
-  /**
-   * The job is complete, report it.
-   */
-  public void jobComplete() {
-    manager.jobComplete(this);
-    currentJob = null;
-    setInstruction("");
-  }
-
-  /**
-   * Verify the job has been done correctly.
-   * 
-   * @return boolean
-   */
-  public boolean verifyJob() {
-    return currentJob.verify();
-  }
-
-  /**
-   * Discard the current job.
-   */
-  public void discardCurrentJob() {
-    setInstruction("discard job");
-    manager.discardJob(this, currentJob);
-    currentJob.discardContents();
-    currentJob = null;
+    String instructionString = role + " " + name + " instructed to " + instruction;
+    FileHelper.logEvent(instructionString, this);
   }
 }

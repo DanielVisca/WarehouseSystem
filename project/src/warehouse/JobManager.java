@@ -9,7 +9,7 @@ public class JobManager {
   // Queue of orders
   private LinkedList<String> orders = new LinkedList<String>();
   // Reference table for item skus
-  private HashMap<String, Integer> skus = new HashMap<String, Integer>();
+  private HashMap<String, String> skus = new HashMap<String, String>();
   // All jobs currently in the warehouse
   private ArrayList<Job> jobs = new ArrayList<Job>();
   // Master system
@@ -17,10 +17,13 @@ public class JobManager {
 
   /**
    * Default constructor for JobManager.
+   * 
+   * @param system to connect to
+   * @param skuFile to get sku information from
    */
-  public JobManager(WarehouseSystem system) {
+  public JobManager(WarehouseSystem system, String skuFile) {
     this.system = system;
-    addSkusFromFile("translation.csv");
+    addSkusFromFile(skuFile);
   }
 
   /**
@@ -44,8 +47,8 @@ public class JobManager {
   private void addFascia(String fascia) {
     String[] translation = fascia.split(",");
     String key = translation[1] + translation[0];
-    addSku(key + "F", Integer.valueOf(translation[2]));
-    addSku(key + "B", Integer.valueOf(translation[3]));
+    addSku(key + "F", translation[2]);
+    addSku(key + "B", translation[3]);
   }
 
   /**
@@ -54,7 +57,7 @@ public class JobManager {
    * @param key the descriptive key value of the sku
    * @param sku to add
    */
-  public void addSku(String key, Integer sku) {
+  public void addSku(String key, String sku) {
     skus.put(key, sku);
   }
 
@@ -65,7 +68,7 @@ public class JobManager {
    */
   public void processOrder(String order) {
     orders.add(order);
-    FileHelper.logEvent("Order " + order + " (" + orders.size() + "/4)");
+    FileHelper.logEvent("IN: Order " + order + " (" + orders.size() + "/4)", this);
     if (orders.size() >= 4) {
       createJob();
     }
@@ -76,7 +79,7 @@ public class JobManager {
    */
   private void createJob() {
     // List of skus and order names
-    int[] jobSkus = new int[8];
+    String[] jobSkus = new String[8];
     String[] jobOrders = new String[4];
 
     // Get skus and names of 4 orders
@@ -91,9 +94,8 @@ public class JobManager {
     }
 
     // Create job and queue it
-    Job job = new Job(jobSkus, jobOrders);
+    Job job = new Job(this.system, jobSkus, jobOrders);
     addJob(job);
-
     system.sendToPicking(job);
   }
 

@@ -1,0 +1,19 @@
+Order SES Blue
+Order SE Red
+Order SE Black
+Order SE Black
+Picker Alice ready
+Picker Alice pick 37
+Picker Alice pick 38
+#Wrong pick
+Picker Alice pick 15
+#Restart pick
+Picker Alice pick 19
+Picker Alice pick 20
+Picker Alice pick 43
+Picker Alice pick 44
+Picker Alice pick 10
+Picker Alice pick 11
+Picker Alice pick 43
+Picker Alice pick 44
+Picker Alice to marshalling
